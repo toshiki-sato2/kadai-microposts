@@ -22,12 +22,49 @@
                         <div>
                             @if (Auth::id() == $micropost->user_id)
                                 {{-- 投稿削除ボタンのフォーム --}}
-                                <form method="POST" action="{{ route('microposts.destroy', $micropost->id) }}">
+                                <form method="POST" action="{{ route('microposts.destroy', $micropost->id) }}" class = "inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-error btn-sm normal-case" 
                                         onclick="return confirm('Delete id = {{ $micropost->id }} ?')">Delete</button>
                                 </form>
+                                
+                                @if (!Auth::user()->is_favoriting($micropost->id))
+                                {{-- お気に入り追加ボタンのフォーム --}}
+                                <form method="POST" action="{{ route('favorites.favorite',$micropost->id) }}" class = "inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-error btn-sm normal-case" 
+                                        onclick="return confirm('add favorite? = {{ $micropost->id }} ?')">Add to Favorite</button>
+                                </form>
+                                
+                                @else
+                                {{-- お気に入り削除ボタンのフォーム --}}
+                                <form method="POST" action="{{ route('favorites.unfavorite',$micropost->id) }}" class = "inline">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button type="submit" class="btn btn-error btn-sm normal-case" 
+                                        onclick="return confirm('delete favorite? = {{ $micropost->id }} ?')"> Unfavorite</button>
+                                </form>
+                                @endif
+                            
+                            @else
+                                @if (!Auth::user()->is_favoriting($micropost->id))
+                                {{-- お気に入り追加ボタンのフォーム --}}
+                                <form method="POST" action="{{ route('favorites.favorite',$micropost->id) }}" class = "inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-error btn-sm normal-case" 
+                                        onclick="return confirm('add favorite? = {{ $micropost->id }} ?')">Add to Favorite</button>
+                                </form>
+                                
+                                @else
+                                {{-- お気に入り削除ボタンのフォーム --}}
+                                <form method="POST" action="{{ route('favorites.unfavorite',$micropost->id) }}" class = "inline">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button type="submit" class="btn btn-error btn-sm normal-case" 
+                                        onclick="return confirm('delete favorite? = {{ $micropost->id }} ?')"> Unfavorite</button>
+                                </form>
+                                @endif
                             @endif
                         </div>
                     </div>
