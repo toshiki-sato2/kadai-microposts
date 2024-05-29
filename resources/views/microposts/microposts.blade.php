@@ -1,5 +1,5 @@
 <div class="mt-4">
-    @if (isset($microposts))
+    @if (!empty($microposts))
         <ul class="list-none">
             @foreach ($microposts as $micropost)
                 <li class="flex items-start gap-x-2 mb-4">

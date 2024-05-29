@@ -58,7 +58,54 @@ class User extends Authenticatable
      */
     public function loadRelationshipCounts()
     {
-        $this->loadCount('microposts');
+        $this->loadCount(['microposts', 'followings', 'followers']);
+    }
+    
+    public function followings(){
+        return $this->belongsToMany(User::class, "user_follow", "user_id", "follow_id")->withTimestamps();
+    }
+    
+    public function followers(){
+        return $this->belongsToMany(User::class, "user_follow", "follow_id", "user_id")->withTimestamps();
+    }
+    
+    public function follow(int $userId){
+        
+        $exist = $this->is_following($userId);
+        $its_me = $this->id == $userId;
+        
+        if($exist || $its_me){
+            return false;
+        }else{
+            $this->followings()->attach($userId);
+        }
+    }
+    
+    public function unfollow(int $userId){
+        $exist = $this->is_following($userId);
+        $its_me = $this->id == $userId;
+        
+        if($exist && !$its_me){
+            $this->followings()->detach($userId);
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+    
+    public function is_following(int $userId){
+        return $this->followings()->where("follow_id", $userId)->exists(); 
+    }
+
+    public function feed_microposts()
+    {
+        // このユーザーがフォロー中のユーザーのidを取得して配列にする
+        $userIds = $this->followings()->pluck('users.id')->toArray();
+        // このユーザーのidもその配列に追加
+        $userIds[] = $this->id;
+        // それらのユーザーが所有する投稿に絞り込む
+        return Micropost::whereIn('user_id', $userIds);
     }
     
 }
