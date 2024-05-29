@@ -1,0 +1,40 @@
+# fly.toml app configuration file generated for microposts-sns on 2024-05-29T06:23:20Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'microposts-sns'
+primary_region = 'nrt'
+console_command = 'php /var/www/html/artisan tinker'
+
+[build]
+  [build.args]
+    NODE_VERSION = '18'
+    PHP_VERSION = '8.2'
+
+[env]
+  APP_ENV = 'production'
+  LOG_CHANNEL = 'stderr'
+  LOG_LEVEL = 'info'
+  LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
+  SESSION_DRIVER = 'cookie'
+  SESSION_SECURE_COOKIE = 'true'
+  APP_URL = 'https://microposts-sns.fly.dev'
+  APP_NAME = 'microposts'
+  APP_DEBUG = false
+  DB_CONNECTION = 'pgsql'
+  DB_HOST = 'aws-0-ap-northeast-1.pooler.supabase.com'
+  DB_PORT = 5432
+  DB_DATABASE = 'postgres'
+  DB_USERNAME = 'postgres.ilaelvulvphkhypclvgl'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'
