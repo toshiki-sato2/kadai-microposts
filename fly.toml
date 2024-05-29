@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for microposts-sns on 2024-05-29T06:23:20Z
+# fly.toml app configuration file generated for micropostss on 2024-05-29T09:34:49Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'microposts-sns'
+app = 'micropostss'
 primary_region = 'nrt'
 console_command = 'php /var/www/html/artisan tinker'
 
@@ -19,8 +19,8 @@ console_command = 'php /var/www/html/artisan tinker'
   LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
   SESSION_DRIVER = 'cookie'
   SESSION_SECURE_COOKIE = 'true'
-  APP_URL = 'https://microposts-sns.fly.dev'
-  APP_NAME = 'microposts'
+  APP_URL = 'https://micropostss.fly.dev/'
+  APP_NAME = 'micropostss'
   APP_DEBUG = false
   DB_CONNECTION = 'pgsql'
   DB_HOST = 'aws-0-ap-northeast-1.pooler.supabase.com'
