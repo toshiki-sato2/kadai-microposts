@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Micropost;
 
 class UsersController extends Controller
 {
@@ -17,6 +18,7 @@ class UsersController extends Controller
             "users" => $users]);
     }
     
+    
     public function show(string $id)
     {
         $user = User::findOrFail($id);
@@ -27,6 +29,10 @@ class UsersController extends Controller
         // ユーザーの投稿一覧を作成日時の降順で取得
         $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
         
+        foreach($microposts as $micropost){
+            $micropost->favorite_count = $micropost->favoriteCounts();
+            \Log::debug($micropost->favoriteCounts());
+        }
         // ユーザー詳細ビューでそれを表示
         return view('users.show', [
             'user' => $user,
@@ -93,9 +99,6 @@ class UsersController extends Controller
             'users' => $followers,
         ]);
     }
-
-
-    
     
     
 }
